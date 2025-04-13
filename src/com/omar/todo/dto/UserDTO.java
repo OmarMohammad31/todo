@@ -1,3 +1,4 @@
+package com.omar.todo.dto;
 public class UserDTO
 {
     private int id;
@@ -10,6 +11,13 @@ public class UserDTO
         setEmail(Email);
         setPassword(password);
     }
+    public UserDTO(String name, String Email, String password){
+        setName(name);
+        setEmail(Email);
+        setPassword(password);
+    }
+    @Override
+    public String toString() {return "UserDTO{"+"id="+id+", name='"+name+'\''+", Email='"+Email+'\''+", password='"+password+'\''+'}';}
     public UserDTO getUser(){return this;}
     public int getId() {return id;}
     public void setId(int id) {this.id = id;}

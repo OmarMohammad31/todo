@@ -1,9 +1,7 @@
+package com.omar.dao;
 import com.omar.todo.dto.TaskDTO;
-import com.omar.todo.dto.UserDTO;
-
 import java.sql.SQLException;
 import java.util.List;
-
 public interface TaskDAO
 {
     int insertTask(TaskDTO taskDTO) throws SQLException;

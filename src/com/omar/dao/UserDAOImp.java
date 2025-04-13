@@ -1,3 +1,5 @@
+package com.omar.dao;
+import com.omar.DataBase;
 import com.omar.todo.dto.UserDTO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,7 +12,13 @@ public class UserDAOImp implements UserDAO
     private static final String getAllUsersQuery = "SELECT * FROM users";
     private static final String getUserQuery = " SELECT * FROM users WHERE id = ?";
     private static final String updateUserQuery = "UPDATE users SET name = ?, Email = ?, password = ? WHERE id = ?";
-    private static final String deleteUserQuery = "DELETE FROM users WHERE id = ?";
+    private static final String deleteUserQuery = "DELETE FROM users WHERE Email = ?";
+    private static final String searchForUserQuery = "SELECT * FROM users WHERE Email = ?";
+    private static final String checkCredentialsQuery = "SELECT * FROM users WHERE Email = ? AND password = ?";
+    private static final UserDAOImp instance = new UserDAOImp();
+    //delte query
+    private UserDAOImp(){}
+    public static UserDAOImp getInstance() {return instance;}
     @Override
     public int insertUser(UserDTO userDTO) throws SQLException
     {
@@ -64,12 +72,31 @@ public class UserDAOImp implements UserDAO
         return numOfUpdatedRecords;
     }
     @Override
-    public int deleteUser(UserDTO userDTO) throws SQLException
+    public int deleteUser(String Email) throws SQLException
     {
         PreparedStatement preparedStatement = DataBase.getConnection().prepareStatement(deleteUserQuery);
-        preparedStatement.setInt(1,userDTO.getId());
+        preparedStatement.setString(1,Email);
         int numOfDeletedRecords = preparedStatement.executeUpdate();
         DataBase.closePreparedStatement(preparedStatement);
         return numOfDeletedRecords;
+    }
+    public boolean searchForUser(String Email) throws SQLException{
+        PreparedStatement preparedStatement = DataBase.getConnection().prepareStatement(searchForUserQuery);
+        preparedStatement.setString(1,Email);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        boolean isFound = resultSet.next();
+        DataBase.closeResultSet(resultSet);
+        DataBase.closePreparedStatement(preparedStatement);
+        return isFound ;
+    }
+    public boolean checkUserCredentials(String Email, String password) throws SQLException{
+        PreparedStatement preparedStatement = DataBase.getConnection().prepareStatement(checkCredentialsQuery);
+        preparedStatement.setString(1,Email);
+        preparedStatement.setString(2,password);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        boolean isValid = resultSet.next();
+        DataBase.closeResultSet(resultSet);
+        DataBase.closePreparedStatement(preparedStatement);
+        return isValid;
     }
 }
