@@ -32,6 +32,7 @@ public class LoggedInWindow
                     Priority priority = Priority.valueOf(getPriority());
                     LocalDateTime dueDate = getDueDate();
                     TaskDTO updatedTask = new TaskDTO(taskID, currentLoggedUser.getUserDTO().getId(), title, content, status, priority, dueDate);
+                    TaskDAOImp.getInstance().updateTask(updatedTask);
                     break;
                 case 3:
 
