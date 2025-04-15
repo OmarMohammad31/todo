@@ -1,5 +1,6 @@
 package com.omar.GUI;
 import com.omar.DataBase.dao.TaskDAOImp;
+import com.omar.DataBase.dao.UserDAOImp;
 import com.omar.DataBase.todo.dto.Priority;
 import com.omar.DataBase.todo.dto.Status;
 import com.omar.DataBase.todo.dto.TaskDTO;
@@ -26,7 +27,6 @@ public class LoggedInWindow
                     break;
                 case 2:
                     int taskID = getTaskID();
-                    input.nextLine();
                     String title = getTitle();
                     String content = getContent();
                     Status status = Status.valueOf(getStatus());
@@ -37,7 +37,9 @@ public class LoggedInWindow
                     System.out.println("Task updated successfully");
                     break;
                 case 3:
-
+                    taskID = getTaskID();
+                    if (TaskDAOImp.getInstance().deleteTask(taskID, currentLoggedUser.getUserDTO().getId())==1) System.out.println("Task deleted successfully");
+                    else System.out.println("Invalid task id");
                     break;
                 case 4:
 
@@ -46,8 +48,11 @@ public class LoggedInWindow
 
                     break;
                 case 6:
+                    currentLoggedUser.logOut();
                     break;
                 case 7:
+                    UserDAOImp.getInstance().deleteUser(currentLoggedUser.getUserDTO().getEmail());
+                    System.out.println("Account deleted successfully!");
                     break;
                 default:
 
@@ -82,6 +87,7 @@ public class LoggedInWindow
     private int getTaskID(){
         System.out.println("Enter task ID: ");
         int taskID = input.nextInt();
+        input.nextLine();
         return taskID;
     }
     private String getTitle(){

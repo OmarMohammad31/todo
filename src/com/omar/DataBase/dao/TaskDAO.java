@@ -8,5 +8,5 @@ public interface TaskDAO
     List<TaskDTO> getAllTasksForUser(int userID) throws SQLException;
     TaskDTO getTask(int userID, int taskID) throws SQLException;
     int updateTask(TaskDTO taskDTO) throws SQLException;
-    int deleteTask(TaskDTO taskDTO) throws SQLException;
+    int deleteTask(int taskID, int userID) throws SQLException;
 }

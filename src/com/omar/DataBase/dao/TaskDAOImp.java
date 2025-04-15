@@ -85,11 +85,11 @@ public class TaskDAOImp implements TaskDAO
         return numOfUpdatedRecords;
     }
     @Override
-    public int deleteTask(TaskDTO taskDTO) throws SQLException
+    public int deleteTask(int taskID, int userID) throws SQLException
     {
         PreparedStatement preparedStatement = DataBaseConnector.getConnection().prepareStatement(deleteTaskQuery);
-        preparedStatement.setInt(1,taskDTO.getUserID());
-        preparedStatement.setInt(2,taskDTO.getTaskID());
+        preparedStatement.setInt(1, userID);
+        preparedStatement.setInt(2, taskID);
         int numOfDeletedTasks = preparedStatement.executeUpdate();
         DataBaseConnector.closePreparedStatement(preparedStatement);
         return numOfDeletedTasks;

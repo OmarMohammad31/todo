@@ -47,17 +47,6 @@ public class StartingWindow
                 case 3:
                     System.exit(0);
                     break;
-                case 4:
-                    currentLoggedUser.setEmail(null);
-                    getInstance();
-                    break;
-                case 5:
-                    if (currentLoggedUser.getEmail()!=null){
-                        UserDAOImp.getInstance().deleteUser(currentLoggedUser.getEmail());
-                        System.out.println("Account deleted successfully!");
-                    }
-                    else System.out.println("there's no logged account");
-                    break;
                 default:
                     System.out.println("Invalid choice");
             }
