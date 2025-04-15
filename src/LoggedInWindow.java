@@ -11,11 +11,11 @@ import java.util.Scanner;
 
 public class LoggedInWindow
 {
+    private Scanner input = new Scanner(System.in);
     private LoggedInWindow() throws SQLException
     {
         while (true){
             showOptions();
-            Scanner input = new Scanner(System.in);
             int choice = input.nextInt();
 
             switch (choice){
@@ -24,7 +24,6 @@ public class LoggedInWindow
                     System.out.println("Task added successfully!");
                     break;
                 case 2:
-
                     break;
                 case 3:
 
@@ -56,9 +55,19 @@ public class LoggedInWindow
         System.out.println("5-Delete all tasks");
     }
     private TaskDTO constructTask(){
-        Scanner input = new Scanner(System.in);
+        String title = getTitle();
+        String content = getContent();
+        String status = getStatus();
+        String priority = getPriority();
+        LocalDateTime dueDate = getDueDate();
+        return new TaskDTO(currentLoggedUser.getUserDTO().getId(), title, content, Status.valueOf(status), Priority.valueOf(priority), dueDate);
+    }
+    private String getTitle(){
         System.out.println("Enter task Title: ");
         String title = input.nextLine();
+        return title;
+    }
+    private String getContent(){
         StringBuilder contentBuilder = new StringBuilder();
         System.out.println("Enter task content (type 'END' on a new line to finish):");
         while (true) {
@@ -66,20 +75,28 @@ public class LoggedInWindow
             if (line.equals("END")) break;
             contentBuilder.append(line).append("\n");
         }
-        String content = contentBuilder.toString();
-
+        return contentBuilder.toString();
+    }
+    private String getStatus(){
         System.out.println("Enter task status ('in_progress','done','not_started','cancelled','on_hold'): ");
         String status = input.nextLine();
+        return status;
+    }
+    private String getPriority(){
         System.out.println("Enter task priority ('high', 'low', 'medium'): ");
         String priority = input.nextLine();
+        return priority;
+    }
+    private LocalDateTime getDueDate(){
         LocalDateTime dueDate = null;
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         while (dueDate == null) {
             System.out.println("Enter task due date and time (yyyy-MM-dd HH:mm): ");
+            Scanner input = new Scanner(System.in);
             String dueDateString = input.nextLine();
             try {dueDate = LocalDateTime.parse(dueDateString, dateTimeFormatter);}
             catch (Exception e) {System.out.println("Invalid format! Please try again.");}
         }
-        return new TaskDTO(currentLoggedUser.getUserDTO().getId(), title, content, Status.valueOf(status), Priority.valueOf(priority), dueDate);
+        return dueDate;
     }
 }
