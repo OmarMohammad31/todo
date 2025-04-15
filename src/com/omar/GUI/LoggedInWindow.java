@@ -1,10 +1,11 @@
-import com.omar.dao.TaskDAOImp;
-import com.omar.todo.dto.Priority;
-import com.omar.todo.dto.Status;
-import com.omar.todo.dto.TaskDTO;
+package com.omar.GUI;
+import com.omar.DataBase.dao.TaskDAOImp;
+import com.omar.DataBase.todo.dto.Priority;
+import com.omar.DataBase.todo.dto.Status;
+import com.omar.DataBase.todo.dto.TaskDTO;
+import com.omar.currentLoggedUser;
 
 import java.sql.SQLException;
-import java.sql.SQLOutput;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;

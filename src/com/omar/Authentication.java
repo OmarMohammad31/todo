@@ -1,5 +1,7 @@
-import com.omar.dao.UserDAOImp;
-import com.omar.todo.dto.UserDTO;
+package com.omar;
+
+import com.omar.DataBase.dao.UserDAOImp;
+import com.omar.DataBase.todo.dto.UserDTO;
 import java.sql.SQLException;
 public class Authentication
 {

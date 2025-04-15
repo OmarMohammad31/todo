@@ -1,8 +1,7 @@
-package com.omar.dao;
-import com.omar.DataBase;
-import com.omar.todo.dto.UserDTO;
+package com.omar.DataBase.dao;
+import com.omar.DataBase.DataBaseConnector;
+import com.omar.DataBase.todo.dto.UserDTO;
 
-import javax.xml.crypto.Data;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,96 +24,96 @@ public class UserDAOImp implements UserDAO
     @Override
     public int insertUser(UserDTO userDTO) throws SQLException
     {
-        PreparedStatement preparedStatement = DataBase.getConnection().prepareStatement(insertUserQuery);
+        PreparedStatement preparedStatement = DataBaseConnector.getConnection().prepareStatement(insertUserQuery);
         preparedStatement.setString(1,userDTO.getName());
         preparedStatement.setString(2,userDTO.getEmail());
         preparedStatement.setString(3,userDTO.getPassword());
         int numOfInsertedRecords = preparedStatement.executeUpdate();
-        DataBase.closePreparedStatement(preparedStatement);
+        DataBaseConnector.closePreparedStatement(preparedStatement);
         return numOfInsertedRecords;
     }
     @Override
     public List<UserDTO> getAllUsers() throws SQLException
     {
-        PreparedStatement preparedStatement = DataBase.getConnection().prepareStatement(getAllUsersQuery);
+        PreparedStatement preparedStatement = DataBaseConnector.getConnection().prepareStatement(getAllUsersQuery);
         ResultSet resultSet = preparedStatement.executeQuery();
         ArrayList<UserDTO> users = new ArrayList<>();
         while (resultSet.next()){
            users.add(new UserDTO(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("Email"), resultSet.getString("password")));
         }
-        DataBase.closeResultSet(resultSet);
-        DataBase.closePreparedStatement(preparedStatement);
+        DataBaseConnector.closeResultSet(resultSet);
+        DataBaseConnector.closePreparedStatement(preparedStatement);
         return users;
     }
     @Override
     public UserDTO getUser(int id) throws SQLException
     {
-        PreparedStatement preparedStatement = DataBase.getConnection().prepareStatement(getUserByIDQuery);
+        PreparedStatement preparedStatement = DataBaseConnector.getConnection().prepareStatement(getUserByIDQuery);
         preparedStatement.setInt(1,id);
         ResultSet resultSet = preparedStatement.executeQuery();
         if (resultSet.next()){
             UserDTO userDTO =  new UserDTO(resultSet.getInt("id"), resultSet.getString("name"),resultSet.getString("Email"), resultSet.getString("password"));
-            DataBase.closeResultSet(resultSet);
-            DataBase.closePreparedStatement(preparedStatement);
+            DataBaseConnector.closeResultSet(resultSet);
+            DataBaseConnector.closePreparedStatement(preparedStatement);
             return userDTO;
         }
-        DataBase.closeResultSet(resultSet);
-        DataBase.closePreparedStatement(preparedStatement);
+        DataBaseConnector.closeResultSet(resultSet);
+        DataBaseConnector.closePreparedStatement(preparedStatement);
         return null;
     }
     @Override
     public UserDTO getUser(String Email) throws SQLException{
-        PreparedStatement preparedStatement = DataBase.getConnection().prepareStatement(getUserByEmailQuery);
+        PreparedStatement preparedStatement = DataBaseConnector.getConnection().prepareStatement(getUserByEmailQuery);
         preparedStatement.setString(1,Email);
         ResultSet resultSet = preparedStatement.executeQuery();
         if (resultSet.next()){
             UserDTO userDTO = new UserDTO(resultSet.getInt("id"), resultSet.getString("name"),Email, resultSet.getString("password"));
-            DataBase.closeResultSet(resultSet);
-            DataBase.closePreparedStatement(preparedStatement);
+            DataBaseConnector.closeResultSet(resultSet);
+            DataBaseConnector.closePreparedStatement(preparedStatement);
             return userDTO;
         }
-        DataBase.closeResultSet(resultSet);
-        DataBase.closePreparedStatement(preparedStatement);
+        DataBaseConnector.closeResultSet(resultSet);
+        DataBaseConnector.closePreparedStatement(preparedStatement);
         return null;
     }
     @Override
     public int updateUser(UserDTO userDTO) throws SQLException
     {
-        PreparedStatement preparedStatement = DataBase.getConnection().prepareStatement(updateUserQuery);
+        PreparedStatement preparedStatement = DataBaseConnector.getConnection().prepareStatement(updateUserQuery);
         preparedStatement.setString(1, userDTO.getName());
         preparedStatement.setString(2,userDTO.getEmail());
         preparedStatement.setString(3,userDTO.getPassword());
         preparedStatement.setInt(4,userDTO.getId());
         int numOfUpdatedRecords = preparedStatement.executeUpdate();
-        DataBase.closePreparedStatement(preparedStatement);
+        DataBaseConnector.closePreparedStatement(preparedStatement);
         return numOfUpdatedRecords;
     }
     @Override
     public int deleteUser(String Email) throws SQLException
     {
-        PreparedStatement preparedStatement = DataBase.getConnection().prepareStatement(deleteUserQuery);
+        PreparedStatement preparedStatement = DataBaseConnector.getConnection().prepareStatement(deleteUserQuery);
         preparedStatement.setString(1,Email);
         int numOfDeletedRecords = preparedStatement.executeUpdate();
-        DataBase.closePreparedStatement(preparedStatement);
+        DataBaseConnector.closePreparedStatement(preparedStatement);
         return numOfDeletedRecords;
     }
     public boolean searchForUser(String Email) throws SQLException{
-        PreparedStatement preparedStatement = DataBase.getConnection().prepareStatement(searchForUserQuery);
+        PreparedStatement preparedStatement = DataBaseConnector.getConnection().prepareStatement(searchForUserQuery);
         preparedStatement.setString(1,Email);
         ResultSet resultSet = preparedStatement.executeQuery();
         boolean isFound = resultSet.next();
-        DataBase.closeResultSet(resultSet);
-        DataBase.closePreparedStatement(preparedStatement);
+        DataBaseConnector.closeResultSet(resultSet);
+        DataBaseConnector.closePreparedStatement(preparedStatement);
         return isFound ;
     }
     public boolean checkUserCredentials(String Email, String password) throws SQLException{
-        PreparedStatement preparedStatement = DataBase.getConnection().prepareStatement(checkCredentialsQuery);
+        PreparedStatement preparedStatement = DataBaseConnector.getConnection().prepareStatement(checkCredentialsQuery);
         preparedStatement.setString(1,Email);
         preparedStatement.setString(2,password);
         ResultSet resultSet = preparedStatement.executeQuery();
         boolean isValid = resultSet.next();
-        DataBase.closeResultSet(resultSet);
-        DataBase.closePreparedStatement(preparedStatement);
+        DataBaseConnector.closeResultSet(resultSet);
+        DataBaseConnector.closePreparedStatement(preparedStatement);
         return isValid;
     }
 }

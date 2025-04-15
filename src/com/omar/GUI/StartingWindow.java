@@ -1,17 +1,19 @@
-import com.omar.dao.UserDAOImp;
+package com.omar.GUI;
+
+import com.omar.DataBase.dao.UserDAOImp;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-public class GUI
+public class StartingWindow
 {
-    private static final GUI instance;
+    private static final StartingWindow instance;
     static
     {
-        try {instance = new GUI();}
+        try {instance = new StartingWindow();}
         catch (SQLException e) {throw new RuntimeException(e);}
     }
-    public static GUI getInstance() {return instance;}
-    private GUI() throws SQLException
+    public static StartingWindow getInstance() {return instance;}
+    private StartingWindow() throws SQLException
     {
         while (true){
             welcome();

@@ -1,8 +1,8 @@
-package com.omar.dao;
-import com.omar.DataBase;
-import com.omar.todo.dto.Priority;
-import com.omar.todo.dto.Status;
-import com.omar.todo.dto.TaskDTO;
+package com.omar.DataBase.dao;
+import com.omar.DataBase.DataBaseConnector;
+import com.omar.DataBase.todo.dto.Priority;
+import com.omar.DataBase.todo.dto.Status;
+import com.omar.DataBase.todo.dto.TaskDTO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,7 +29,7 @@ public class TaskDAOImp implements TaskDAO
     public static TaskDAOImp getInstance(){return instance;}
     public int insertTask(TaskDTO taskDTO) throws SQLException
     {
-        PreparedStatement preparedStatement = DataBase.getConnection().prepareStatement(insertTaskQuery);
+        PreparedStatement preparedStatement = DataBaseConnector.getConnection().prepareStatement(insertTaskQuery);
         preparedStatement.setInt(1,taskDTO.getUserID());
         preparedStatement.setString(2,taskDTO.getTitle());
         preparedStatement.setString(3,taskDTO.getContent());
@@ -37,34 +37,34 @@ public class TaskDAOImp implements TaskDAO
         preparedStatement.setString(5,taskDTO.getPriorityString());
         preparedStatement.setObject(6,taskDTO.getDueDate());
         int numOfInsertedRecords = preparedStatement.executeUpdate();
-        DataBase.closePreparedStatement(preparedStatement);
+        DataBaseConnector.closePreparedStatement(preparedStatement);
         return numOfInsertedRecords;
     }
     @Override
     public List<TaskDTO> getAllTasksForUser(int userID) throws SQLException
     {
         ArrayList<TaskDTO> tasks = new ArrayList<>();
-        PreparedStatement preparedStatement = DataBase.getConnection().prepareStatement(getAllTasksForUserQuery);
+        PreparedStatement preparedStatement = DataBaseConnector.getConnection().prepareStatement(getAllTasksForUserQuery);
         preparedStatement.setInt(1, userID);
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()){
             tasks.add(new TaskDTO(resultSet.getInt(col_task_id), userID, resultSet.getString(col_title), resultSet.getString(col_content), Status.valueOf(resultSet.getString(col_status)), Priority.valueOf(resultSet.getString(col_priority)), resultSet.getObject(col_dueDate, LocalDateTime.class)));
         }
-        DataBase.closeResultSet(resultSet);
-        DataBase.closePreparedStatement(preparedStatement);
+        DataBaseConnector.closeResultSet(resultSet);
+        DataBaseConnector.closePreparedStatement(preparedStatement);
         return tasks;
     }
     @Override
     public TaskDTO getTask(int userID, int taskID) throws SQLException
     {
-        PreparedStatement preparedStatement = DataBase.getConnection().prepareStatement(getTaskQuery);
+        PreparedStatement preparedStatement = DataBaseConnector.getConnection().prepareStatement(getTaskQuery);
         preparedStatement.setInt(1,userID);
         preparedStatement.setInt(2,taskID);
         ResultSet resultSet = preparedStatement.executeQuery();
         if (resultSet.next()){
             TaskDTO taskDTO = new TaskDTO(taskID ,userID ,resultSet.getString(col_title),resultSet.getString(col_content), Status.valueOf(resultSet.getString(col_status)), Priority.valueOf(resultSet.getString(col_priority)), resultSet.getObject(col_dueDate, LocalDateTime.class));
-            DataBase.closeResultSet(resultSet);
-            DataBase.closePreparedStatement(preparedStatement);
+            DataBaseConnector.closeResultSet(resultSet);
+            DataBaseConnector.closePreparedStatement(preparedStatement);
             return taskDTO;
         }
         return null;
@@ -72,7 +72,7 @@ public class TaskDAOImp implements TaskDAO
     @Override
     public int updateTask(TaskDTO taskDTO) throws SQLException
     {
-        PreparedStatement preparedStatement = DataBase.getConnection().prepareStatement(updateTaskQuery);
+        PreparedStatement preparedStatement = DataBaseConnector.getConnection().prepareStatement(updateTaskQuery);
         preparedStatement.setString(1,taskDTO.getTitle());
         preparedStatement.setString(2,taskDTO.getContent());
         preparedStatement.setString(3,taskDTO.getStatusString());
@@ -81,26 +81,26 @@ public class TaskDAOImp implements TaskDAO
         preparedStatement.setInt(6,taskDTO.getUserID());
         preparedStatement.setInt(7,taskDTO.getTaskID());
         int numOfUpdatedRecords = preparedStatement.executeUpdate();
-        DataBase.closePreparedStatement(preparedStatement);
+        DataBaseConnector.closePreparedStatement(preparedStatement);
         return numOfUpdatedRecords;
     }
     @Override
     public int deleteTask(TaskDTO taskDTO) throws SQLException
     {
-        PreparedStatement preparedStatement = DataBase.getConnection().prepareStatement(deleteTaskQuery);
+        PreparedStatement preparedStatement = DataBaseConnector.getConnection().prepareStatement(deleteTaskQuery);
         preparedStatement.setInt(1,taskDTO.getUserID());
         preparedStatement.setInt(2,taskDTO.getTaskID());
         int numOfDeletedTasks = preparedStatement.executeUpdate();
-        DataBase.closePreparedStatement(preparedStatement);
+        DataBaseConnector.closePreparedStatement(preparedStatement);
         return numOfDeletedTasks;
     }
     public int clearTasksForUser(int userID) throws SQLException{
-        PreparedStatement preparedStatement = DataBase.getConnection().prepareStatement(clearTasksForUserQuery);
+        PreparedStatement preparedStatement = DataBaseConnector.getConnection().prepareStatement(clearTasksForUserQuery);
          preparedStatement.setInt(1,userID);
          int numOfDeletedRecords = preparedStatement.executeUpdate();
-         preparedStatement = DataBase.getConnection().prepareStatement(resetIdentityCount);
+         preparedStatement = DataBaseConnector.getConnection().prepareStatement(resetIdentityCount);
          preparedStatement.execute();
-         DataBase.closePreparedStatement(preparedStatement);
+         DataBaseConnector.closePreparedStatement(preparedStatement);
          return numOfDeletedRecords;
     }
 }

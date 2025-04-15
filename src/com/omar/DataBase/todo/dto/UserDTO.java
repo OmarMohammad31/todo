@@ -1,4 +1,4 @@
-package com.omar.todo.dto;
+package com.omar.DataBase.todo.dto;
 public class UserDTO
 {
     private int id;
