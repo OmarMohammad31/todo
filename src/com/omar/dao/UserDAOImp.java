@@ -1,6 +1,8 @@
 package com.omar.dao;
 import com.omar.DataBase;
 import com.omar.todo.dto.UserDTO;
+
+import javax.xml.crypto.Data;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,7 +12,8 @@ public class UserDAOImp implements UserDAO
 {
     private static final String insertUserQuery = "INSERT INTO users(name, Email, password) VALUES(?, ?, ?)";
     private static final String getAllUsersQuery = "SELECT * FROM users";
-    private static final String getUserQuery = " SELECT * FROM users WHERE id = ?";
+    private static final String getUserByIDQuery = "SELECT * FROM users WHERE id = ?";
+    private static final String getUserByEmailQuery = "SELECT * FROM users WHERE Email = ?";
     private static final String updateUserQuery = "UPDATE users SET name = ?, Email = ?, password = ? WHERE id = ?";
     private static final String deleteUserQuery = "DELETE FROM users WHERE Email = ?";
     private static final String searchForUserQuery = "SELECT * FROM users WHERE Email = ?";
@@ -46,11 +49,26 @@ public class UserDAOImp implements UserDAO
     @Override
     public UserDTO getUser(int id) throws SQLException
     {
-        PreparedStatement preparedStatement = DataBase.getConnection().prepareStatement(getUserQuery);
+        PreparedStatement preparedStatement = DataBase.getConnection().prepareStatement(getUserByIDQuery);
         preparedStatement.setInt(1,id);
         ResultSet resultSet = preparedStatement.executeQuery();
         if (resultSet.next()){
             UserDTO userDTO =  new UserDTO(resultSet.getInt("id"), resultSet.getString("name"),resultSet.getString("Email"), resultSet.getString("password"));
+            DataBase.closeResultSet(resultSet);
+            DataBase.closePreparedStatement(preparedStatement);
+            return userDTO;
+        }
+        DataBase.closeResultSet(resultSet);
+        DataBase.closePreparedStatement(preparedStatement);
+        return null;
+    }
+    @Override
+    public UserDTO getUser(String Email) throws SQLException{
+        PreparedStatement preparedStatement = DataBase.getConnection().prepareStatement(getUserByEmailQuery);
+        preparedStatement.setString(1,Email);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()){
+            UserDTO userDTO = new UserDTO(resultSet.getInt("id"), resultSet.getString("name"),Email, resultSet.getString("password"));
             DataBase.closeResultSet(resultSet);
             DataBase.closePreparedStatement(preparedStatement);
             return userDTO;

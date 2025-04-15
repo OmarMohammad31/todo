@@ -13,44 +13,51 @@ public class GUI
     public static GUI getInstance() {return instance;}
     private GUI() throws SQLException
     {
-        welcome();
-        Scanner input = new Scanner(System.in);
-        int option = input.nextInt();
-        switch (option){
-            case 1:
-                System.out.println("Enter Name: ");
-                String enteredName = input.nextLine();
-                System.out.println("Enter Email: ");
-                String enteredEmail = input.nextLine();
-                System.out.println("Enter Password: ");
-                String enteredPassword = input.nextLine();
-                Authentication.signUp(enteredName, enteredEmail, enteredPassword);
-                break;
-            case 2:
-                System.out.println("Enter Email: ");
-                 enteredEmail = input.nextLine();
-                System.out.println("Enter Password: ");
-                 enteredPassword = input.nextLine();
-                if (Authentication.logIn(enteredEmail, enteredPassword)) System.out.println("logged in successfully!");
-                else System.out.println("Something went wrong!");
-                break;
-            case 3:
-                System.exit(0);
-                break;
-            case 4:
-                currentLoggedUser.setEmail(null);
-                getInstance();
-                break;
-            case 5:
-                if (currentLoggedUser.getEmail()!=null){
-                    UserDAOImp.getInstance().deleteUser(currentLoggedUser.getEmail());
-                    System.out.println("Account deleted successfully!");
-                }
-                else System.out.println("there's no logged account");
-                break;
-            default:
-                getInstance();
+        while (true){
+            welcome();
+            Scanner input = new Scanner(System.in);
+            int option = input.nextInt();
+            input.nextLine();
+            switch (option){
+                case 1:
+                    System.out.println("Enter Name: ");
+                    String enteredName = input.nextLine();
+                    System.out.println("Enter Email: ");
+                    String enteredEmail = input.nextLine();
+                    System.out.println("Enter Password: ");
+                    String enteredPassword = input.nextLine();
+                    if (Authentication.signUp(enteredName, enteredEmail, enteredPassword)) LoggedInWindow.getInstance();
+                    break;
+                case 2:
+                    System.out.println("Enter Email: ");
+                    enteredEmail = input.nextLine();
+                    System.out.println("Enter Password: ");
+                    enteredPassword = input.nextLine();
+                    if (Authentication.logIn(enteredEmail, enteredPassword)){
+                        System.out.println("logged in successfully!");
+                        LoggedInWindow.getInstance();
+                    }
+                    else System.out.println("Something went wrong!");
+                    break;
+                case 3:
+                    System.exit(0);
+                    break;
+                case 4:
+                    currentLoggedUser.setEmail(null);
+                    getInstance();
+                    break;
+                case 5:
+                    if (currentLoggedUser.getEmail()!=null){
+                        UserDAOImp.getInstance().deleteUser(currentLoggedUser.getEmail());
+                        System.out.println("Account deleted successfully!");
+                    }
+                    else System.out.println("there's no logged account");
+                    break;
+                default:
+                    System.out.println("Invalid choice");
+            }
         }
+
     }
     public void welcome(){
         System.out.println("Welcome to to-do list App!");
@@ -61,3 +68,5 @@ public class GUI
         System.out.println("5: delete account");
     }
 }
+//adding logged window
+//moving log out and delete account to logged window

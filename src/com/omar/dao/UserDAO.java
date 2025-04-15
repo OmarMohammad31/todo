@@ -7,6 +7,7 @@ public interface UserDAO
     public int insertUser(UserDTO userDTO) throws SQLException;
     public List<UserDTO> getAllUsers() throws SQLException;
     public UserDTO getUser(int id) throws SQLException;
+    public UserDTO getUser(String Email) throws SQLException;
     public int updateUser(UserDTO userDTO) throws SQLException;
     public int deleteUser(String Email) throws SQLException;
     public boolean searchForUser(String Email) throws SQLException;
