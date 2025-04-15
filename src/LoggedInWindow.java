@@ -44,8 +44,12 @@ public class LoggedInWindow
                 case 5:
 
                     break;
+                case 6:
+                    break;
+                case 7:
+                    break;
                 default:
-                    System.out.println("invalid choice");
+
             }
         }
 
@@ -63,6 +67,8 @@ public class LoggedInWindow
         System.out.println("3-Delete task");
         System.out.println("4-Show all tasks");
         System.out.println("5-Delete all tasks");
+        System.out.println("6:Log out");
+        System.out.println("7: delete account");
     }
     private TaskDTO constructTask(){
         String title = getTitle();
