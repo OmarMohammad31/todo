@@ -55,7 +55,8 @@ public class LoggedInWindow
                     }
                     break;
                 case 5:
-
+                    TaskDAOImp.getInstance().clearTasksForUser(currentLoggedUser.getUserDTO().getId());
+                    System.out.println("Tasks cleared successfully");
                     break;
                 case 6:
                     currentLoggedUser.logOut();
