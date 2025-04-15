@@ -1,6 +1,9 @@
 package com.omar.GUI;
 
+import com.omar.Authentication;
 import com.omar.DataBase.dao.UserDAOImp;
+import com.omar.currentLoggedUser;
+
 import java.sql.SQLException;
 import java.util.Scanner;
 
