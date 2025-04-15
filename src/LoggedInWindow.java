@@ -24,6 +24,14 @@ public class LoggedInWindow
                     System.out.println("Task added successfully!");
                     break;
                 case 2:
+                    int taskID = getTaskID();
+                    input.nextLine();
+                    String title = getTitle();
+                    String content = getContent();
+                    Status status = Status.valueOf(getStatus());
+                    Priority priority = Priority.valueOf(getPriority());
+                    LocalDateTime dueDate = getDueDate();
+                    TaskDTO updatedTask = new TaskDTO(taskID, currentLoggedUser.getUserDTO().getId(), title, content, status, priority, dueDate);
                     break;
                 case 3:
 
@@ -57,10 +65,15 @@ public class LoggedInWindow
     private TaskDTO constructTask(){
         String title = getTitle();
         String content = getContent();
-        String status = getStatus();
-        String priority = getPriority();
+        Status status = Status.valueOf(getStatus());
+        Priority priority = Priority.valueOf(getPriority());
         LocalDateTime dueDate = getDueDate();
-        return new TaskDTO(currentLoggedUser.getUserDTO().getId(), title, content, Status.valueOf(status), Priority.valueOf(priority), dueDate);
+        return new TaskDTO(currentLoggedUser.getUserDTO().getId(), title, content, status, priority, dueDate);
+    }
+    private int getTaskID(){
+        System.out.println("Enter task ID: ");
+        int taskID = input.nextInt();
+        return taskID;
     }
     private String getTitle(){
         System.out.println("Enter task Title: ");
