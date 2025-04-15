@@ -33,6 +33,7 @@ public class LoggedInWindow
                     LocalDateTime dueDate = getDueDate();
                     TaskDTO updatedTask = new TaskDTO(taskID, currentLoggedUser.getUserDTO().getId(), title, content, status, priority, dueDate);
                     TaskDAOImp.getInstance().updateTask(updatedTask);
+                    System.out.println("Task updated successfully");
                     break;
                 case 3:
 
