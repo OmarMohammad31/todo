@@ -41,7 +41,7 @@ public class TaskDAOImp implements TaskDAO
         return numOfInsertedRecords;
     }
     @Override
-    public List<TaskDTO> getAllTasksForUser(int userID) throws SQLException
+    public ArrayList<TaskDTO> getAllTasksForUser(int userID) throws SQLException
     {
         ArrayList<TaskDTO> tasks = new ArrayList<>();
         PreparedStatement preparedStatement = DataBaseConnector.getConnection().prepareStatement(getAllTasksForUserQuery);

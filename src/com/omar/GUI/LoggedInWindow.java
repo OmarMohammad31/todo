@@ -9,6 +9,7 @@ import com.omar.currentLoggedUser;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class LoggedInWindow
@@ -42,7 +43,16 @@ public class LoggedInWindow
                     else System.out.println("Invalid task id");
                     break;
                 case 4:
-
+                    ArrayList<TaskDTO> tasks = TaskDAOImp.getInstance().getAllTasksForUser(currentLoggedUser.getUserDTO().getId());
+                    for (TaskDTO task: tasks){
+                        System.out.println("task id: "+ task.getTaskID());
+                        System.out.println("task title: " + task.getTitle());
+                        System.out.println("task content: " + task.getContent());
+                        System.out.println("task priority: " + task.getPriorityString());
+                        System.out.println("task due date: " + task.getDueDateString());
+                        System.out.println("task status: " + task.getStatusString());
+                        System.out.println();
+                    }
                     break;
                 case 5:
 
@@ -51,8 +61,8 @@ public class LoggedInWindow
                     currentLoggedUser.logOut();
                     break;
                 case 7:
-                    UserDAOImp.getInstance().deleteUser(currentLoggedUser.getUserDTO().getEmail());
-                    System.out.println("Account deleted successfully!");
+                    if (UserDAOImp.getInstance().deleteUser(currentLoggedUser.getUserDTO().getEmail())==1) System.out.println("Account deleted successfully!");
+                    else System.out.println("Something went wrong");
                     break;
                 default:
 

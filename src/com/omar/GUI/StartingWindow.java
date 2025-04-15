@@ -1,12 +1,9 @@
 package com.omar.GUI;
-
 import com.omar.Authentication;
 import com.omar.DataBase.dao.UserDAOImp;
 import com.omar.currentLoggedUser;
-
 import java.sql.SQLException;
 import java.util.Scanner;
-
 public class StartingWindow
 {
     private static final StartingWindow instance;
@@ -51,7 +48,6 @@ public class StartingWindow
                     System.out.println("Invalid choice");
             }
         }
-
     }
     public void welcome(){
         System.out.println("Welcome to to-do list App!");
@@ -60,5 +56,3 @@ public class StartingWindow
         System.out.println("3:Exit");
     }
 }
-//adding logged window
-//moving log out and delete account to logged window
